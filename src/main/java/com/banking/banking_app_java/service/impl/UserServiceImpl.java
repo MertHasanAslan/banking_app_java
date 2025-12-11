@@ -16,6 +16,6 @@ public class UserServiceImpl implements UserService {
                 .gender(userRequest.getGender())
                 .address(userRequest.getAddress())
                 .stateOfOrigin(userRequest.getStateOfOrigin())
-                .accountNUmber()
+                .accountNumber()
     }
 }

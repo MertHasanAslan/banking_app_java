@@ -3,11 +3,19 @@ package com.banking.banking_app_java.utils;
 import java.time.Year;
 
 public class AccountUtils {
-    Year currentYear = Year.now();
+    public static String generateAccountNumber(){
+        Year currentYear = Year.now();
 
-    int min = 100000;
-    int max = 999999;
+        int min = 100000;
+        int max = 999999;
 
-    int randNum = (int)Math.floor(Math.random() * (max-min+1) + min);
+        int randNum = (int)Math.floor(Math.random() * (max-min+1) + min);
+
+        String year = String.valueOf(currentYear);
+        String randomNumber = String.valueOf(randNum);
+
+        String accountNumber = year + randomNumber;
+        return accountNumber;
+    }
 
 }
