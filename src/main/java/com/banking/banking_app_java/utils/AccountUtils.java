@@ -3,6 +3,12 @@ package com.banking.banking_app_java.utils;
 import java.time.Year;
 
 public class AccountUtils {
+
+    public static final String ACCOUNT_EXISTS_CODE = "001";
+    public static final String ACCOUNT_EXISTS_MESSAGE = "This email has already linked with an account!";
+
+
+
     public static String generateAccountNumber(){
         Year currentYear = Year.now();
 
