@@ -1,5 +1,6 @@
 package com.banking.banking_app_java.service.impl;
 
+import com.banking.banking_app_java.dto.AccountInfo;
 import com.banking.banking_app_java.dto.BankResponse;
 import com.banking.banking_app_java.dto.UserRequest;
 import com.banking.banking_app_java.entity.User;
@@ -41,5 +42,18 @@ public class UserServiceImpl implements UserService {
                 .secondPhoneNumber(userRequest.getSecondPhoneNumber())
                 .status("ACTIVE")
                 .build();
+
+        userRepository.save(newUser);
+
+        return BankResponse.builder()
+                .responseCode(AccountUtils.ACCOUNT_CREATION_CODE)
+                .responseMessage(AccountUtils.ACCOUNT_CREATION_MESSAGE)
+                .accountInfo(AccountInfo.builder()
+                        .accountName(newUser.getFirstName() + " " + newUser.getLastName())
+                        .accountBalance(newUser.getAccountBalance())
+                        .accountNumber(newUser.getAccountNumber())
+                        .build())
+                .build();
+
     }
 }
