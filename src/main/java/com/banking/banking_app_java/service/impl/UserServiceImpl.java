@@ -2,9 +2,11 @@ package com.banking.banking_app_java.service.impl;
 
 import com.banking.banking_app_java.dto.AccountInfo;
 import com.banking.banking_app_java.dto.BankResponse;
+import com.banking.banking_app_java.dto.EmailDetails;
 import com.banking.banking_app_java.dto.UserRequest;
 import com.banking.banking_app_java.entity.User;
 import com.banking.banking_app_java.repository.UserRepository;
+import com.banking.banking_app_java.service.EmailService;
 import com.banking.banking_app_java.service.UserService;
 import com.banking.banking_app_java.utils.AccountUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    EmailService emailService;
 
     @Override
     public BankResponse createAccount(UserRequest userRequest) { // Create a new user and save it into db
@@ -44,6 +49,14 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         userRepository.save(newUser);
+        // Sending email after creating the
+        EmailDetails emailDetails = EmailDetails.builder()
+                .recipient(newUser.getEmail())
+                .subject("Account Has Created!")
+                .messageBody("Congratulations!, your account has been created.")
+                .build();
+
+        emailService.sendEmailAlert(emailDetails);
 
         return BankResponse.builder()
                 .responseCode(AccountUtils.ACCOUNT_CREATION_CODE)
