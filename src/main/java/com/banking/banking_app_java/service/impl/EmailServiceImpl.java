@@ -6,6 +6,7 @@ import com.banking.banking_app_java.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.task.TaskExecutionProperties;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,8 @@ public class EmailServiceImpl implements EmailService {
 
             javaMailSender.send(mailMessage);
             System.out.println("Mail Sended Succsessfully");
+        } catch(MailException e){
+            System.out.println("Mail sending failed" + e.getMessage());
         }
     }
 }
