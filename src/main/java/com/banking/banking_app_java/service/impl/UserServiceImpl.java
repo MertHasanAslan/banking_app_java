@@ -98,13 +98,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String nameEnquiry(EnquiryRequest enquiryRequest){
+        // checking if the account exists
         boolean isAccountNumExists = userRepository.existsByAccountNumber(enquiryRequest.getAccountNumber());
         if (!isAccountNumExists){
             return ACCOUNT_NOT_EXISTS_MESSAGE;
         }
 
         User foundUser = userRepository.findByAccountNumber(enquiryRequest.getAccountNumber());
-        String name = foundUser.getFirstName() + " " + foundUser.getMiddleName() + " " + foundUser.getLastName();
-        return name;
+        return foundUser.getFirstName() + " " + foundUser.getMiddleName() + " " + foundUser.getLastName();
+    }
+
+    @Override
+    public BankResponse creditAccount(CreditDebitRequest creditDebitRequest) {
+        // checking if the account exists
+        boolean isAccountExist = userRepository.existsByAccountNumber(creditDebitRequest.getAccountNumber());
+        if(!isAccountExist){
+            return BankResponse.builder()
+                    .responseCode(ACCOUNT_NOT_EXISTS_CODE)
+                    .responseMessage(ACCOUNT_NOT_EXISTS_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        }
+
+        User foundUser = userRepository.findByAccountNumber(creditDebitRequest.getAccountNumber());
+
+        return BankResponse.builder()
+                .responseCode(ACCOUNT_FOUND_CODE)
+                .responseMessage(ACCOUNT_FOUND_MESSAGE)
+                .accountInfo(AccountInfo.builder()
+                        .accountName(foundUser.getFirstName() + " " + foundUser.getMiddleName() + " " + foundUser.getLastName())
+                        .accountNumber(foundUser.getAccountNumber())
+                        .accountBalance(foundUser.getAccountBalance())
+                        .build())
+                .build();
     }
 }
