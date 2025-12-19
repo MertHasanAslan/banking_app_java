@@ -70,6 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
     // balance, name enquiry and credit, debit, transfer
+    @Override
     public BankResponse balanceEnquiry(EnquiryRequest enquiryRequest){
         // Checking if the account number exists
         boolean isAccountNumExist = userRepository.existsByAccountNumber(enquiryRequest.getAccountNumber());
@@ -95,7 +96,19 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    public BankResponse nameEnquiry(EnquiryRequest enquiryRequest){
-        return null;
+    @Override
+    public String nameEnquiry(EnquiryRequest enquiryRequest){
+        boolean isAccountNumExists = userRepository.existsByAccountNumber(enquiryRequest.getAccountNumber());
+        if (!isAccountNumExists){
+            return BankResponse.builder()
+                    .responseCode(ACCOUNT_NOT_EXISTS_CODE)
+                    .responseMessage(ACCOUNT_NOT_EXISTS_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        }
+
+        User foundUser = userRepository.findByAccountNumber(enquiryRequest.getAccountNumber());
+        String name = foundUser.getFirstName() + " " + foundUser.getMiddleName() + " " + foundUser.getLastName();
+        return name;
     }
 }
