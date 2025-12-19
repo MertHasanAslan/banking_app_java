@@ -100,11 +100,7 @@ public class UserServiceImpl implements UserService {
     public String nameEnquiry(EnquiryRequest enquiryRequest){
         boolean isAccountNumExists = userRepository.existsByAccountNumber(enquiryRequest.getAccountNumber());
         if (!isAccountNumExists){
-            return BankResponse.builder()
-                    .responseCode(ACCOUNT_NOT_EXISTS_CODE)
-                    .responseMessage(ACCOUNT_NOT_EXISTS_MESSAGE)
-                    .accountInfo(null)
-                    .build();
+            return ACCOUNT_NOT_EXISTS_MESSAGE;
         }
 
         User foundUser = userRepository.findByAccountNumber(enquiryRequest.getAccountNumber());
