@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
                 .responseCode(ACCOUNT_FOUND_CODE)
                 .responseMessage(ACCOUNT_FOUND_MESSAGE)
                 .accountInfo(AccountInfo.builder()
-                        .accountName(foundUser.getFirstName() + foundUser.getMiddleName() + foundUser.getLastName())
+                        .accountName(foundUser.getFirstName() + " " + foundUser.getMiddleName() + " " + foundUser.getLastName())
                         .accountNumber(foundUser.getAccountNumber())
                         .accountBalance(foundUser.getAccountBalance())
                         .build())
