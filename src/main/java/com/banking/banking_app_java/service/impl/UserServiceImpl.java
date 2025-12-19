@@ -1,9 +1,6 @@
 package com.banking.banking_app_java.service.impl;
 
-import com.banking.banking_app_java.dto.AccountInfo;
-import com.banking.banking_app_java.dto.BankResponse;
-import com.banking.banking_app_java.dto.EmailDetails;
-import com.banking.banking_app_java.dto.UserRequest;
+import com.banking.banking_app_java.dto.*;
 import com.banking.banking_app_java.entity.User;
 import com.banking.banking_app_java.repository.UserRepository;
 import com.banking.banking_app_java.service.EmailService;
@@ -13,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+
+import static com.banking.banking_app_java.utils.AccountUtils.ACCOUNT_NOT_EXISTS_CODE;
+import static com.banking.banking_app_java.utils.AccountUtils.ACCOUNT_NOT_EXISTS_MESSAGE;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -68,5 +68,23 @@ public class UserServiceImpl implements UserService {
                         .build())
                 .build();
 
+    }
+
+    // balance, name enquiry and credit, debit, transfer
+    public BankResponse balanceEnquiry(EnquiryRequest enquiryRequest){
+        // Checking if the account number exists
+        boolean isAccountNumExist = userRepository.existsByAccountNumber(enquiryRequest.getAccountNumber());
+
+        if (!isAccountNumExist){
+            return BankResponse.builder()
+                    .responseCode(ACCOUNT_NOT_EXISTS_CODE)
+                    .responseMessage(ACCOUNT_NOT_EXISTS_MESSAGE)
+                    .accountInfo()
+                    .build();
+        }
+    }
+
+    public BankResponse nameEnquiry(EnquiryRequest enquiryRequest){
+        return null;
     }
 }
