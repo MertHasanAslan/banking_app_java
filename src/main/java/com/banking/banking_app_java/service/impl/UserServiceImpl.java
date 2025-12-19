@@ -11,8 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
-import static com.banking.banking_app_java.utils.AccountUtils.ACCOUNT_NOT_EXISTS_CODE;
-import static com.banking.banking_app_java.utils.AccountUtils.ACCOUNT_NOT_EXISTS_MESSAGE;
+import static com.banking.banking_app_java.utils.AccountUtils.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -79,9 +78,21 @@ public class UserServiceImpl implements UserService {
             return BankResponse.builder()
                     .responseCode(ACCOUNT_NOT_EXISTS_CODE)
                     .responseMessage(ACCOUNT_NOT_EXISTS_MESSAGE)
-                    .accountInfo()
+                    .accountInfo(null)
                     .build();
         }
+
+        User foundUser = userRepository.findByAccountNumber(enquiryRequest.getAccountNumber());
+
+        return BankResponse.builder()
+                .responseCode(ACCOUNT_FOUND_CODE)
+                .responseMessage(ACCOUNT_FOUND_MESSAGE)
+                .accountInfo(AccountInfo.builder()
+                        .accountName(foundUser.getFirstName() + foundUser.getMiddleName() + foundUser.getLastName())
+                        .accountNumber(foundUser.getAccountNumber())
+                        .accountBalance(foundUser.getAccountBalance())
+                        .build())
+                .build();
     }
 
     public BankResponse nameEnquiry(EnquiryRequest enquiryRequest){
